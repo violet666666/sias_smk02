@@ -1,0 +1,115 @@
+//Create a new user
+
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "name": "tegar alfalakh",
+    "nomorInduk":"1052190123",
+    "email": "tegaralfalakh@gmail.com",
+    "password": "123456",
+    "confPassword": "123456",
+    "role": "admin"
+}
+
+
+###
+// get All users
+
+GET http://localhost:5000/users
+
+
+###
+// get single user
+
+GET http://localhost:5000/users/06878b2a-6941-4012-9363-47a934430bcf
+
+
+###
+// update user
+PATCH  http://localhost:5000/users/ed6b163f-b342-4652-906f-a94a86f38d24
+Content-Type: application/json
+
+{
+    "name": "tegirtegar update",
+    "email": "tegirtegaradmin@gmail.com",
+    "password": "12345678",
+    "confPassword": "12345678"
+}
+
+###
+// delete user
+
+DELETE  http://localhost:5000/users/06878b2a-6941-4012-9363-47a934430bcf
+
+
+###
+// login admin
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "tegaradmin@gmail.com",
+    "password": "tegar123"
+}
+
+###
+// login user
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "tegirtegar@gmail.com",
+    "password": "123456"
+}
+
+###
+// akses ME login user
+GET http://localhost:5000/me
+
+###
+// logout user
+DELETE http://localhost:5000/logout
+
+###
+// get All product
+
+GET http://localhost:5000/products
+
+###
+// get Single product
+
+GET http://localhost:5000/products/e086d73f-21f8-4ca9-b873-8b7a8b25d058
+
+###
+//get data admin
+GET http://localhost:5000/products/d7761ac0-4eab-4200-b7d7-288e85164ba7
+
+###
+// POST data product create
+
+POST http://localhost:5000/products
+Content-Type: application/json
+
+{
+    "name": "baju enam 6",
+    "price": "110000"
+}
+
+
+###
+// POST data product create
+
+PATCH  http://localhost:5000/products/d7761ac0-4eab-4200-b7d7-288e85164ba7
+Content-Type: application/json
+
+{
+    "name": "baju admin diupdate",
+    "price": "99999"
+}
+
+###
+// DELETE data product
+DELETE http://localhost:5000/products/d7761ac0-4eab-4200-b7d7-288e85164ba7
