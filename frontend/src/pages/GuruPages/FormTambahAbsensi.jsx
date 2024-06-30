@@ -14,7 +14,15 @@ const FormTambahAbsensi = () => {
         // Fetch kelas data from the backend
         const fetchKelas = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/classes");
+                const token = localStorage.getItem("token");
+                const response = await axios.get("http://localhost:5000/classes",
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `${token}`
+                        }
+                    }
+                );
                 setKelas(response.data);
             } catch (error) {
                 console.error('Error fetching kelas data', error);
@@ -29,7 +37,15 @@ const FormTambahAbsensi = () => {
             // Fetch students data for the selected class
             const fetchStudents = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:5000/classes/${selectedKelas}/students`);
+                    const token = localStorage.getItem("token");
+                    const response = await axios.get(`http://localhost:5000/classes/${selectedKelas}/students`,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `${token}`
+                            }
+                        }
+                    );
                     setStudents(response.data);
                 } catch (error) {
                     console.error('Error fetching students data', error);

@@ -9,6 +9,8 @@ import GuruRoute from "./routes/GuruRoute.js";
 import SiswaRoute from "./routes/SiswaRoute.js";
 import ParentRoute from "./routes/ParentRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
+import AdminRoute from "./routes/AdminRoute.js";
+
 dotenv.config();
 
 const app = express();
@@ -43,6 +45,7 @@ app.use(GuruRoute);
 app.use(SiswaRoute);
 app.use(ParentRoute);
 app.use(AuthRoute);
+app.use(AdminRoute);
 
 store.sync();
 

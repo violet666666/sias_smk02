@@ -11,18 +11,26 @@ const FormAddUser = () => {
   const [role, setRole] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-
+ 
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/users", {
+      const token = localStorage.getItem("token");
+      await axios.post("http://localhost:5000/user", {
         name: name,
         email: email,
         password: password,
         confPassword: confPassword,
         nomorInduk: nomorInduk,
-        role: role,
-      });
+        role: role
+      },
+     {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `${token}`
+      }
+     }
+    );
       navigate("/users");
     } catch (error) {
       if (error.response) {

@@ -16,8 +16,15 @@ const FormEditKelas = () => {
   useEffect(() => {
     const getKelasById = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:5000/classes/${id}`
+          `http://localhost:5000/classes/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `${token}`
+            }
+          }
         );
         setName(response.data.name);
         setDeskripsi(response.data.deskripsi);

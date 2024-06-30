@@ -16,7 +16,14 @@ const FormEditUser = () => {
   useEffect(() => {
     const getUserById = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`http://localhost:5000/users/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+          }
+        });
         setName(response.data.name);
         setNomorInduk(response.data.nomorInduk);
         setEmail(response.data.email);
