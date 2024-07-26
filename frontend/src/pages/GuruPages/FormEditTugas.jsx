@@ -45,7 +45,7 @@ const FormEditTugas = () => {
         try {
             const response = await axios.put(`http://localhost:5000/tasks/${id}`, { title, description, dueDate, classId: selectedKelas });
             alert(response.data.message);
-            navigate('/guru/list-tugas');
+            navigate('/task/list-tugas');
         } catch (error) {
             console.error('There was an error updating the task!', error);
         }
@@ -109,7 +109,7 @@ const FormEditTugas = () => {
                     </button>
                     <button
                         type="button"
-                        onClick={() => navigate('/guru/list-tugas')}
+                        onClick={() => navigate('/task/list-tugas')}
                         className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                     >
                         Cancel

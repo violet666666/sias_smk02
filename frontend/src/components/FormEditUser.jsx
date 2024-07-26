@@ -17,8 +17,7 @@ const FormEditUser = () => {
     const getUserById = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`http://localhost:5000/users/${id}`,
-        {
+        const response = await axios.get(`http://localhost:5000/users/${id}`, {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `${token}`
@@ -40,13 +39,19 @@ const FormEditUser = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/users/${id}`, {
+      const token = localStorage.getItem("token");
+      await axios.put(`http://localhost:5000/users/${id}`, {
         name: name,
         nomorInduk: nomorInduk,
         email: email,
         password: password,
         confPassword: confPassword,
         role: role,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `${token}`
+        }
       });
       navigate("/users");
     } catch (error) {
@@ -126,7 +131,9 @@ const FormEditUser = () => {
             onChange={(e) => setRole(e.target.value)}
           >
             <option value="admin">Admin</option>
-            <option value="user">User</option>
+            <option value="guru">Guru</option>
+            <option value="siswa">Siswa</option>
+            <option value="orang tua">Orang Tua</option>
           </select>
         </div>
         

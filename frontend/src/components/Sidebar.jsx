@@ -25,21 +25,25 @@ const Sidebar = () => {
               <IoHome /> <span>Dashboard</span>
             </NavLink>
           </li>
-          <li>
-            <NavLink to={"/classes"} className="flex items-center space-x-2">
-              <IoPricetag /> <span>Kelas</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={"/guru/list-tugas"} className="flex items-center space-x-2">
-              <IoPricetag /> <span>Tugas</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={"/guru/list-absensi"} className="flex items-center space-x-2">
-              <IoPricetag /> <span>Kehadiran</span>
-            </NavLink>
-          </li>
+          {user && ["guru", "orang tua", "siswa"].includes(user.role) && (
+            <>
+              <li>
+                <NavLink to={"/classes"} className="flex items-center space-x-2">
+                  <IoPricetag /> <span>Kelas</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to={"/task/list-tugas"} className="flex items-center space-x-2">
+                  <IoPricetag /> <span>Tugas</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to={"/attendance/list-absensi"} className="flex items-center space-x-2">
+                  <IoPricetag /> <span>Kehadiran</span>
+                </NavLink>
+              </li>
+            </>
+          )}
         </ul>
         {user && user.role === "admin" && (
           <div className="mt-6">

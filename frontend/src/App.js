@@ -12,10 +12,12 @@ import "../src/style/input.css";
 
 // yang gw update di laptop akil
 import AddTugas from './pages/GuruPages/FormAddTugas';
-import ListTugas from './pages/GuruPages/FormListTugas';
+// import ListTugas from './pages/GuruPages/FormListTugas';
 import EditTugas from './pages/GuruPages/FormEditTugas';
 import TambahAbsensi from './pages/GuruPages/FormTambahAbsensi';
-import ListAbsensi from './pages/GuruPages/FormListAbsensi';
+// import ListAbsensi from './pages/GuruPages/FormListAbsensi';
+import ListTask from './pages/Task';
+import ListAttendance from "./pages/Attendance"
 
 function App() {
   return (
@@ -32,12 +34,12 @@ function App() {
         <Route path="/classes/edit/:id" element={<EditKelas />} />
         {/* <Route path="/siswa/dashboard" element={<DashboardSiswa />} /> */}
 
-        <Route path="/guru/add-tugas" element={<AddTugas />} /> 
-        <Route path="/guru/list-tugas" element={<ListTugas />} /> 
-        <Route path="/guru/edit-tugas/:id" element={<EditTugas />} />
-        <Route path="/guru/tambah-absensi" element={<TambahAbsensi />} />
-        <Route path="/guru/list-absensi" element={<ListAbsensi />} />
-
+        <Route path="/task/add-tugas" element={<AddTugas />} /> 
+        <Route path="/task/edit-tugas/:id" element={<EditTugas />} />
+        <Route path="/attendance/tambah-absensi" element={<TambahAbsensi />} />
+        {/* <Route path="/attendance/list-absensi" element={<ListAbsensi />} /> */}
+        <Route path="/task/list-tugas" element={<ListTask />} />
+        <Route path="/attendance/list-absensi" element={<ListAttendance />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -28,8 +28,6 @@ export const getUserById = async(req, res) =>{
 
 export const createUser = async(req, res) =>{
     const {name, nomorInduk, email, password, confPassword, role} = req.body;
-    console.log(password);
-    console.log(confPassword);
     if(password !== confPassword) return res.status(400).json({message: "Password tidak sama"});
     const hashPassword = await argon2.hash(password);
     try {
@@ -47,38 +45,40 @@ export const createUser = async(req, res) =>{
 
 }
 
-export const updateUser = async(req, res) =>{
-    const user = await User.findOne( {
-            where: {
-                uuid: req.params.id
-            }
-        });
-        if(!user) return res.status(404).json({msg: "User tidak ditemukan"});
-        const {name, nomorInduk, email, password, confPassword, role} = req.body;
-        let hashPassword;
-        if(password === "" || password === null){
-            hashPassword = user.password
-        }else{
-            hashPassword = await argon2.hash(password);
+export const updateUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, email, password, confPassword, nomorInduk, role } = req.body;
+      const user = await User.findOne({
+        where: {
+          uuid: id
         }
-        if(password !== confPassword) return res.status(400).json({message: "Password tidak sama"});if(password !== confPassword) return res.status(400).json({message: "Password tidak sama"});
-        try {
-            await User.update({
-                name: name,
-                nomorInduk: nomorInduk,
-                email: email,
-                password : hashPassword,
-                role : role
-            },{
-                where:{
-                    id: user.id
-                }
-            });
-            res.status(200).json({message: "User berhasil diupdate"});
-        } catch (error) {
-            req.status(400).json({message: error.message});
+      });
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      user.name = name;
+      user.email = email;
+      user.nomorInduk = nomorInduk;
+      user.role = role;
+  
+      // Validate password and confirm password
+      if (password) {
+        if (password !== confPassword) {
+          return res.status(400).json({ message: "Password dan konfirmasi password tidak cocok" });
         }
-}
+        user.password = await argon2.hash(password);
+      }
+  
+      await user.save();
+  
+      res.status(200).json({ message: "User updated successfully" });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  };
 
 export const deleteUser = async(req, res) =>{
     const user = await User.findOne( {

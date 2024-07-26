@@ -10,23 +10,50 @@ const Userlist = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:5000/users");
-    setUsers(response.data);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/users", {
+        headers: {
+          "Authorization": `${token}`
+        }
+      });
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users", error);
+    }
   };
 
   const deleteUser = async (userId) => {
-    await axios.delete(`http://localhost:5000/users/${userId}`);
-    getUsers();
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:5000/users/${userId}`, {
+        headers: {
+          "Authorization": `${token}`
+        }
+      });
+      getUsers();
+    } catch (error) {
+      console.error("Error deleting user", error);
+    }
+  };
+
+  const handleDelete = (userId) => {
+    const confirmDelete = window.confirm("Apakah Anda yakin menghapus User?");
+    if (confirmDelete) {
+      deleteUser(userId);
+    }
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Users</h1>
-      <h2 className="text-xl mb-4">Daftar User</h2>
-      <Link to="/users/add" className="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">
-        Tambah User
-      </Link>
-      <table className="min-w-full bg-white border border-gray-200">
+      <h1 className="text-2xl font-bold mb-4 text-center">Users</h1>
+      <h2 className="text-xl mb-4 text-center">Daftar User</h2>
+      <div className="flex justify-center mb-4">
+        <Link to="/users/add" className="bg-blue-500 text-white px-4 py-2 rounded inline-block">
+          Tambah User
+        </Link>
+      </div>
+      <table className="min-w-full bg-white border border-gray-200 text-center">
         <thead>
           <tr>
             <th className="px-4 py-2 border-b">No</th>
@@ -53,7 +80,7 @@ const Userlist = () => {
                   Edit
                 </Link>
                 <button
-                  onClick={() => deleteUser(user.uuid)}
+                  onClick={() => handleDelete(user.uuid)}
                   className="bg-red-500 text-white px-2 py-1 rounded"
                 >
                   Delete
