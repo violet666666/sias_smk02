@@ -23,6 +23,7 @@ const FormEditUser = () => {
             "Authorization": `${token}`
           }
         });
+        
         setName(response.data.name);
         setNomorInduk(response.data.nomorInduk);
         setEmail(response.data.email);
