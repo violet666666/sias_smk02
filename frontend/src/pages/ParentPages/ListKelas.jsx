@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom";
+import { FaChalkboardTeacher, FaCalendarAlt, FaUserGraduate } from 'react-icons/fa';
 
-const ListTugas = () => {
+const ListKelas = () => {
     const [classes, setClasses] = useState([]);
 
     useEffect(() => {
-        // Fetch classes data from the backend
         const fetchClasses = async () => {
             try {
                 const response = await axios.get("http://localhost:5000/api/guru/classes");
@@ -19,16 +19,22 @@ const ListTugas = () => {
     }, []);
 
     return (
-        <div className="max-w-6xl mx-auto p-4 bg-white rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-4">Daftar Kelas</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="container mx-auto p-6 bg-white rounded-lg shadow-lg">
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Daftar Kelas</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {classes.map((kelas) => (
-                    <div key={kelas.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
-                        <h2 className="text-xl font-bold mb-2">{kelas.title}</h2>
-                        <p className="text-gray-700 mb-1">Tahun: {kelas.year}</p>
-                        <p className="text-gray-700 mb-1">Guru: {kelas.teacher.name}</p>
-                        <p className="text-gray-700 mb-1">Periode: {kelas.start_date} - {kelas.end_date}</p>
-                        <Link to={`/guru/kelas/${kelas.id}`} className="mt-2 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    <div key={kelas.id} className="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h2 className="text-2xl font-bold mb-4 text-blue-600">{kelas.title}</h2>
+                        <p className="text-gray-700 mb-2 flex items-center">
+                            <FaCalendarAlt className="mr-2 text-blue-500" /> Tahun: {kelas.year}
+                        </p>
+                        <p className="text-gray-700 mb-2 flex items-center">
+                            <FaChalkboardTeacher className="mr-2 text-blue-500" /> Guru: {kelas.teacher.name}
+                        </p>
+                        <p className="text-gray-700 mb-4 flex items-center">
+                            <FaCalendarAlt className="mr-2 text-blue-500" /> Periode: {kelas.start_date} - {kelas.end_date}
+                        </p>
+                        <Link to={`/guru/kelas/${kelas.id}`} className="mt-4 inline-block px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300">
                             Lihat Kelas
                         </Link>
                     </div>
@@ -38,4 +44,4 @@ const ListTugas = () => {
     );
 };
 
-export default ListTugas;
+export default ListKelas;
