@@ -10,10 +10,29 @@ import SiswaRoute from "./routes/SiswaRoute.js";
 import ParentRoute from "./routes/ParentRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import AdminRoute from "./routes/AdminRoute.js";
+import User from "./models/UserModel.js";
+import Kelas from "./models/KelasModel.js";
+import TaskRoute from "./routes/TaskRoute.js";
 
 dotenv.config();
 
 const app = express();
+
+// Define relationships
+User.hasMany(Kelas);
+Kelas.belongsTo(User);
+
+// Many-to-Many relationship between Kelas and Students (User)
+Kelas.belongsToMany(User, { 
+    through: 'kelas_siswa',
+    as: 'students',
+    foreignKey: 'kelasId'
+});
+User.belongsToMany(Kelas, { 
+    through: 'kelas_siswa',
+    as: 'classes',
+    foreignKey: 'studentId'
+});
 
 const sessionStore = SequelizeStore(session.Store);
 
@@ -21,8 +40,14 @@ const store = new sessionStore({
     db: db
 });
 
+// Sync database with force: false to prevent data loss
 (async () => {
-    await db.sync();
+    try {
+        await db.sync({ force: false });
+        console.log('Database synchronized');
+    } catch (error) {
+        console.error('Error synchronizing database:', error);
+    }
 })();
 
 app.use(session({
@@ -46,6 +71,7 @@ app.use(SiswaRoute);
 app.use(ParentRoute);
 app.use(AuthRoute);
 app.use(AdminRoute);
+app.use(TaskRoute);
 
 store.sync();
 

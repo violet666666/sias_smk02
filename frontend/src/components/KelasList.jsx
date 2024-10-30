@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import FormAddKelas from "./FormAddKelas";
+import FormEditKelas from "./FormEditKelas";
 
 const KelasList = () => {
   const [classes, setClasses] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedKelasId, setSelectedKelasId] = useState(null);
 
   useEffect(() => {
     getClasses();
   }, []);
 
   const getClasses = async () => {
-    const response = await axios.get("http://localhost:5000/classes");
-    setClasses(response.data);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/classes", {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `${token}`
+        }
+      });
+      setClasses(response.data);
+    } catch (error) {
+      console.error("Error fetching classes:", error.response?.data?.msg || error.message);
+    }
   };
 
   const deleteKelas = async (kelasId) => {
@@ -38,16 +53,42 @@ const KelasList = () => {
     }
   };
 
+  const handleEdit = (kelasId) => {
+    setSelectedKelasId(kelasId);
+    setIsEditModalOpen(true);
+  };
+
   return (
     <div className="container mx-auto p-6 bg-white rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Daftar Kelas</h1>
         {user && ["admin", "guru"].includes(user.role) && (
-          <Link to="/classes/add" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition duration-300 ease-in-out flex items-center">
+          <button 
+            onClick={() => setIsModalOpen(true)} 
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition duration-300 ease-in-out flex items-center"
+          >
             <FaPlus className="mr-2" /> Tambah Kelas Baru
-          </Link>
+          </button>
         )}
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <FormAddKelas onClose={() => setIsModalOpen(false)} />
+          </div>
+        </div>
+      )}
+
+      {isEditModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <FormEditKelas kelasId={selectedKelasId} onClose={() => setIsEditModalOpen(false)} />
+          </div>
+        </div>
+      )}
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200">
           <thead className="bg-gray-50">
@@ -75,9 +116,9 @@ const KelasList = () => {
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{new Date(kelas.periodeAwal).toLocaleDateString()}</td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{new Date(kelas.periodeAkhir).toLocaleDateString()}</td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 font-medium">
-                  <Link to={`/classes/edit/${kelas.uuid}`} className="text-blue-600 hover:text-blue-900 mr-3">
+                  <button onClick={() => handleEdit(kelas.uuid)} className="text-blue-600 hover:text-blue-900 mr-3">
                     <FaEdit className="inline-block mr-1" /> Edit
-                  </Link>
+                  </button>
                   <button onClick={() => handleDelete(kelas.uuid)} className="text-red-600 hover:text-red-900">
                     <FaTrash className="inline-block mr-1" /> Delete
                   </button>

@@ -30,14 +30,14 @@ const Login = () => {
     <section className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-2xl">
         <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-gray-900">Welcome Back</h1>
-          <p className="mt-2 text-sm text-gray-600">Please sign in to your account</p>
+          <h1 className="text-3xl font-extrabold text-gray-900">Selamat Datang </h1>
+          <p className="mt-2 text-sm text-gray-600">Silahkan masukkan email dan password</p>
         </div>
         {isError && <p className="text-center text-red-500 bg-red-100 border border-red-400 rounded-md p-2">{message}</p>}
         <form onSubmit={Auth} className="mt-8 space-y-6">
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email-address" className="sr-only">Email address</label>
+              <label htmlFor="email-address" className="sr-only">Email</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <FaEnvelope className="h-5 w-5 text-gray-400" />
@@ -49,7 +49,7 @@ const Login = () => {
                   autoComplete="email"
                   required
                   className="appearance-none rounded-md relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Email address"
+                  placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -86,7 +86,7 @@ const Login = () => {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-              ) : "Sign In"}
+              ) : "Masuk"}
             </button>
           </div>
         </form>

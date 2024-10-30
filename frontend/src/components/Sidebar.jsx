@@ -25,7 +25,6 @@ const Sidebar = () => {
           <h2 className="text-2xl font-bold text-white">SIAKAD</h2>
         </div>
         <nav className="flex-grow">
-          <p className="text-xs uppercase tracking-wider text-blue-200 mb-4">General</p>
           <ul className="space-y-2">
             <li>
               <NavLink

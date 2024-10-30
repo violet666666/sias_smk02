@@ -1,24 +1,30 @@
 import express from 'express';
 import { verifyToken, checkRole } from '../middleware/AuthUser.js';
-import { createKelas, updateKelas, deleteKelas } from '../controllers/Classes.js';
-import { createTask, updateTask, deleteTask, getAllTasks } from '../controllers/Task.js';
-import { createAttendance } from '../controllers/Attendance.js';
-
-import { getAllClasses } from '../controllers/Classes.js';
+import { 
+    getClasses,
+    createKelas, 
+    updateKelas, 
+    deleteKelas
+} from '../controllers/Classes.js';
+import User from '../models/UserModel.js';
 
 const router = express.Router();
 
-router.post('/class', verifyToken, checkRole(['guru']), createKelas);
-router.put('/class/:id', verifyToken, checkRole(['guru']), updateKelas);
-router.delete('/class/:id', verifyToken, checkRole(['guru']), deleteKelas);
+router.get('/classes', verifyToken, checkRole(['guru', 'admin']), getClasses);
+router.post('/classes', verifyToken, checkRole(['guru', 'admin']), createKelas);
+router.patch('/classes/:id', verifyToken, checkRole(['guru', 'admin']), updateKelas);
+router.delete('/classes/:id', verifyToken, checkRole(['guru', 'admin']), deleteKelas);
 
-router.post('/task', verifyToken, checkRole(['guru']), createTask);
-router.put('/task/:id', verifyToken, checkRole(['guru']), updateTask);
-router.delete('/task/:id', verifyToken, checkRole(['guru']), deleteTask);
-
-router.get('/tasks', getAllTasks);
-router.get('/classes', getAllClasses);
-
-router.post('/attendance', verifyToken, checkRole(['guru']), createAttendance);
+router.get('/students', verifyToken, checkRole(['guru', 'admin']), async (req, res) => {
+    try {
+        const students = await User.findAll({
+            where: { role: 'siswa' },
+            attributes: ['id', 'name']
+        });
+        res.json(students);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+});
 
 export default router;
